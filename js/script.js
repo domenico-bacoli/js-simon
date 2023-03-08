@@ -19,19 +19,26 @@ Gestire l'inserimento dei numeri tramite 5 input diversi.
 const randomNumberEl = document.getElementById("random-number");
 const timerCounterEl = document.getElementById("timer-counter");
 const timeFinishedMessageEl = document.getElementById("time-finished-message");
-const userNumbersEnteredEl = document.getElementById("user-numbers-entered");
+let userNumbersEnteredEl = document.getElementById("user-numbers-entered");
 const guessedNumbersEl1 = document.getElementById("guessed-numbers-1");
 const guessedNumbersEl2 = document.getElementById("guessed-numbers-2");
 const guessedNumbersEl3 = document.getElementById("guessed-numbers-3");
 const guessedNumbersEl4 = document.getElementById("guessed-numbers-4");
 const guessedNumbersEl5 = document.getElementById("guessed-numbers-5");
 const numberGuessedMessageEl = document.getElementById("number-guessed-message");
+const inputItemEl = document.querySelectorAll(".input-item");
+let userFirstNumberEl = document.getElementById("first-number");
+let userSecondNumberEl = document.getElementById("second-number");
+let userThirdNumberEl = document.getElementById("third-number");
+let userFourthNumberEl = document.getElementById("fourth-number");
+let userFifthNumberEl = document.getElementById("fifth-number");
+const sendButtonEl = document.getElementById("send-button");
 
 let randomNumberGenerated = [];
 let timerCounter = 0
 let isGuessed = 0
 
-setTimeout(enterNumber, 12000)
+setTimeout(enterNumber, 11000)
 
 let countdown = setInterval(timer, 1000);
     generateRandomNumber(5);
@@ -41,23 +48,22 @@ let countdown = setInterval(timer, 1000);
 
 //___________FUNZIONI____________
 function enterNumber(){
-    let userNumber1 = parseInt(prompt("inserisci il primo numero"));
-    let userNumber2 = parseInt(prompt("inserisci il secondo numero"));
-    let userNumber3 = parseInt(prompt("inserisci il terzo numero"));
-    let userNumber4 = parseInt(prompt("inserisci il quarto numero"));
-    let userNumber5 = parseInt(prompt("inserisci il quinto numero"));
 
-    randomNumberEl.innerText = randomNumberGenerated;
-    
-    userNumbersEnteredEl.innerText = `Hai inserito i seguenti numeri: ${userNumber1}, ${userNumber2}, ${userNumber3}, ${userNumber4}, ${userNumber5}`;
+    for(let i = 0; i < inputItemEl.length; i++){
+        inputItemEl[i].style.display = "flex";
+        sendButtonEl.style.display = "flex";
+    }
 
-    numberControl(userNumber1, guessedNumbersEl1);
-    numberControl(userNumber2, guessedNumbersEl2);
-    numberControl(userNumber3, guessedNumbersEl3);
-    numberControl(userNumber4, guessedNumbersEl4);
-    numberControl(userNumber5, guessedNumbersEl5);
+    sendButtonEl.addEventListener("click", function(){
+        randomNumberEl.innerText = randomNumberGenerated;
+        numberControl(parseInt(userFirstNumberEl.value), guessedNumbersEl1);
+        numberControl(parseInt(userSecondNumberEl.value), guessedNumbersEl2);
+        numberControl(parseInt(userThirdNumberEl.value), guessedNumbersEl3);
+        numberControl(parseInt(userFourthNumberEl.value), guessedNumbersEl4);
+        numberControl(parseInt(userFifthNumberEl.value), guessedNumbersEl5);
+        numberGuessedMessageEl.innerText = `Il tuo Punteggio: ${isGuessed}`
+    })
 
-    numberGuessedMessageEl.innerText = `Il tuo Punteggio: ${isGuessed}`
 }
 
 //funzione che restituisce un valore se il numero inserito è incluso nell'array o un altro valore se il numero inserito non è incluso nell'array
@@ -73,17 +79,15 @@ function numberControl(number, displayEl){
 }
 
 function timer(){
-    // console.log("ciao");
-    timerCounterEl.innerText = timerCounter;
+    timerCounterEl.innerText = timerCounter + 1;
     
-
     if(timerCounter >= 10){
         timeFinishedMessageEl.innerText = "Tempo scaduto ora inserisci i numeri che ti ricordi";
+        randomNumberEl.innerText = ""; 
         clearInterval(countdown);
-        randomNumberEl.innerText = "";
+        
         timerCounterEl.innerText = "";
     }
-    
     timerCounter++
     
 }
